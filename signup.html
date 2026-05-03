@@ -2,44 +2,46 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FamilyOS - Sign Up</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body {
       margin: 0;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       background: #0b0f19;
       color: white;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
     .box {
       background: #121826;
-      padding: 30px;
-      border-radius: 16px;
-      width: 320px;
+      padding: 34px;
+      border-radius: 18px;
+      width: 330px;
       text-align: center;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin: 10px 0;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
+      box-sizing: border-box;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      background: gold;
+      padding: 14px;
+      margin-top: 12px;
+      background: #f4c542;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -47,45 +49,42 @@
 </head>
 
 <body>
+  <div class="box">
+    <h1>Începe Gratuit</h1>
+    <p>Creează contul tău</p>
 
-<div class="box">
-  <h2>Începe Gratuit</h2>
-  <p>Creează contul tău</p>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Parolă">
+    <button onclick="signup()">Creează cont</button>
+  </div>
 
-  <button onclick="signup()">Creează cont</button>
-</div>
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://mcqjnykrupqplsrzjuvm.supabase.co",
+      "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
+    );
 
-<script>
-  // 🔥 PUNE DATELE TALE AICI
-  const supabaseClient = supabase.createClient(
-    "https://mcqjnykrupqplsrzjuvm.supabase.co",
-    "sb_publishable_9XFTG46eg3zJuE-a0KMxFw_c4N1HOZM"
-  );
+    async function signup() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
-  async function signup() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+      if (!email || !password) {
+        alert("Completează toate câmpurile");
+        return;
+      }
 
-    if (!email || !password) {
-      alert("Completează toate câmpurile");
-      return;
+      const { error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Cont creat! Verifică emailul 📩");
+      }
     }
-
-    const { data, error } = await supabaseClient.auth.signUp({
-      email: email,
-      password: password
-    });
-
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Cont creat! Verifică emailul 📩");
-    }
-  }
-</script>
-
+  </script>
 </body>
 </html>
