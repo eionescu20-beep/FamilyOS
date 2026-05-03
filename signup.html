@@ -114,6 +114,13 @@ function signup() {
     document.getElementById("success").innerText = t.success;
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+<script>
+const supabaseClient = supabase.createClient(
+  "https://mcqjnykrupqplsrzjuvm.supabase.co",
+  "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
+);
+</script>
 </body>
 </html>
