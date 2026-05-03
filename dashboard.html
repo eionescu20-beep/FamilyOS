@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FamilyOS Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      background: #07111f;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #0f1f33;
+      padding: 28px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .logo span {
+      color: #ffd400;
+    }
+
+    .nav {
+      display: grid;
+      gap: 16px;
+      color: #cbd5e1;
+    }
+
+    .main {
+      padding: 36px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .btn {
+      background: #ffd400;
+      color: #111;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #102033;
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    .muted {
+      color: #94a3b8;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">Family<span>OS</span></div>
+
+      <div class="nav">
+        <div>Dashboard</div>
+        <div>Planner AI</div>
+        <div>Budget AI</div>
+        <div>Family</div>
+        <div>Settings</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="top">
+        <div>
+          <h1>Family Command Center</h1>
+          <p class="muted">Your family, organized in one place.</p>
+        </div>
+
+        <button class="btn" onclick="logout()">Logout</button>
+      </div>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Today</h3>
+          <p class="muted">No urgent events yet.</p>
+        </div>
+
+        <div class="card">
+          <h3>Planner AI</h3>
+          <p class="muted">Plan your week with smart suggestions.</p>
+        </div>
+
+        <div class="card">
+          <h3>Budget AI</h3>
+          <p class="muted">Track bills, expenses and subscriptions.</p>
+        </div>
+
+        <div class="card wide">
+          <h3>AI Daily Summary</h3>
+          <p class="muted">
+            Welcome to FamilyOS. Soon, your AI agents will summarize your family’s schedule,
+            budget, reminders and priorities here.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Account</h3>
+          <p class="muted" id="userEmail">Loading user...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://mcqjnykrupqplsrzjuvm.supabase.co",
+      "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
+    );
+
+    async function checkUser() {
+      const { data } = await supabaseClient.auth.getUser();
+
+      if (!data.user) {
+        window.location.href = "signup.html";
+        return;
+      }
+
+      document.getElementById("userEmail").innerText = data.user.email;
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = "signup.html";
+    }
+
+    checkUser();
+  </script>
+</body>
+</html>
