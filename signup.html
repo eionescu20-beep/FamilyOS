@@ -1,131 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FamilyOS - Sign Up</title>
+  <meta charset="UTF-8">
+  <title>FamilyOS - Sign Up</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Inter, sans-serif;
-    background: linear-gradient(135deg, #07111F, #0B1220);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-.container {
-    background: rgba(255,255,255,0.05);
-    padding: 40px;
-    border-radius: 16px;
-    width: 320px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0b0f19;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-h1 {
-    margin-bottom: 10px;
-}
+    .box {
+      background: #121826;
+      padding: 30px;
+      border-radius: 16px;
+      width: 320px;
+      text-align: center;
+    }
 
-p {
-    opacity: 0.7;
-    margin-bottom: 25px;
-}
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: none;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    background: #FFD54F;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.success {
-    margin-top: 15px;
-    color: #4CAF50;
-}
-</style>
+    button {
+      width: 100%;
+      padding: 12px;
+      background: gold;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1 id="title">Start Free</h1>
-    <p id="subtitle">Create your account</p>
+<div class="box">
+  <h2>Începe Gratuit</h2>
+  <p>Creează contul tău</p>
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Parolă">
 
-    <button onclick="signup()" id="btn">Create Account</button>
-
-    <div class="success" id="success"></div>
+  <button onclick="signup()">Creează cont</button>
 </div>
 
 <script>
-// 🌍 Auto language detect
-const lang = navigator.language || navigator.userLanguage;
+  // 🔥 PUNE DATELE TALE AICI
+  const supabaseClient = supabase.createClient(
+    "https://mcqjnykrupqplsrzjuvm.supabase.co",
+    "sb_publishable_9XFTG46eg3zJuE-a0KMxFw_c4N1HOZM"
+  );
 
-const text = {
-    en: {
-        title: "Start Free",
-        subtitle: "Create your account",
-        btn: "Create Account",
-        success: "Account created!"
-    },
-    ro: {
-        title: "Începe Gratuit",
-        subtitle: "Creează contul tău",
-        btn: "Creează Cont",
-        success: "Cont creat!"
+  async function signup() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Completează toate câmpurile");
+      return;
     }
-};
 
-const t = lang.startsWith("ro") ? text.ro : text.en;
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password
+    });
 
-document.getElementById("title").innerText = t.title;
-document.getElementById("subtitle").innerText = t.subtitle;
-document.getElementById("btn").innerText = t.btn;
-
-async function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  if (!email || !password) {
-    alert("Complete all fields");
-    return;
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Cont creat! Verifică emailul 📩");
+    }
   }
-
-  const { data, error } = await supabaseClient.auth.signUp({
-    email: email,
-    password: password
-  });
-
-  if (error) {
-    alert(error.message);
-  } else {
-    document.getElementById("success").innerText = "Cont creat! Verifică emailul 📩";
-  }
-}</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<script>
-const supabaseClient = supabase.createClient(
-  "https://mcqjnykrupqplsrzjuvm.supabase.co",
-  "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
-);
 </script>
+
 </body>
 </html>
