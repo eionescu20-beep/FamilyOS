@@ -66,9 +66,10 @@
 
     <button class="btn primary" onclick="signup()">Creează cont</button>
 
-    <button class="btn google" onclick="loginWithGoogle()">
-      Continuă cu Google
-    </button>
+  
+<button class="btn google" onclick="loginWithGoogle()">
+  Continuă cu Google
+</button>
   </div>
 
   <script>
@@ -94,17 +95,18 @@
     }
 
     async function loginWithGoogle() {
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: window.location.origin
-        }
-      });
-
-      if (error) {
-        alert(error.message);
-      }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "http://localhost:5173"
     }
+  });
+
+  if (error) {
+    alert(error.message);
+  }
+}
+    
   </script>
 
 </body>
