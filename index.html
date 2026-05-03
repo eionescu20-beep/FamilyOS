@@ -1,62 +1,646 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FamilyOS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FamilyOS — The AI Operating System for Modern Families</title>
 
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0B1D2A;
-      color: white;
-      padding: 40px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(201,168,93,0.10), transparent 35%),
+        linear-gradient(180deg, #07111F 0%, #0B1220 100%);
+      color: #F8FAFC;
     }
 
-    h1 {
-      font-size: 48px;
-      line-height: 1.2;
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 32px 80px;
     }
 
-    p {
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 70px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .logo span { color: #C9A85D; }
+
+    .nav-links {
+      display: flex;
+      gap: 34px;
+      font-size: 15px;
       color: #CBD5E1;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .language {
+      background: rgba(255,255,255,0.06);
+      color: #F8FAFC;
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .login {
+      padding: 13px 22px;
+      border: 1px solid rgba(226,232,240,0.28);
+      border-radius: 12px;
+    }
+
+    .start {
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F8D982, #C9A85D);
+      color: #0B1220;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 58px;
+      align-items: center;
+      padding-bottom: 42px;
+    }
+
+    .hero h1 {
+      font-size: clamp(54px, 6vw, 82px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      margin: 0 0 28px;
+    }
+
+    .gold { color: #C9A85D; }
+
+    .hero p {
+      font-size: 20px;
+      line-height: 1.55;
+      color: #CBD5E1;
+      max-width: 620px;
+      margin: 0 0 34px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 18px 28px;
+      border-radius: 13px;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #F8D982, #C9A85D);
+      color: #0B1220;
+      border: none;
+    }
+
+    .btn-secondary {
+      background: rgba(15,23,42,0.55);
+      color: #F8FAFC;
+      border: 1px solid rgba(226,232,240,0.3);
+    }
+
+    .hero-image {
+      height: 560px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(226,232,240,0.16);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+      background:
+        linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.25)),
+        url("https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 30px 0 86px;
+    }
+
+    .trust-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 16px;
+      padding: 18px 20px;
+      font-weight: 900;
+      backdrop-filter: blur(18px);
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      letter-spacing: -0.04em;
+      margin: 0 0 10px;
+    }
+
+    .section-title p {
+      color: #CBD5E1;
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .features {
+      max-width: 980px;
+      margin: 0 auto 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card {
+      min-height: 220px;
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.75));
+      border: 1px solid rgba(226,232,240,0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .icon {
+      font-size: 34px;
+      color: #C9A85D;
+      margin-bottom: 26px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #CBD5E1;
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .agents,
+    .pricing,
+    .legal {
+      max-width: 980px;
+      margin: 44px auto 0;
+      padding: 38px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.94), rgba(30,41,59,0.72));
+      border: 1px solid rgba(226,232,240,0.13);
+    }
+
+    .agents h2,
+    .pricing h2,
+    .legal h2 {
+      text-align: center;
+      font-size: 38px;
+      letter-spacing: -0.04em;
+      margin: 0 0 10px;
+    }
+
+    .agents > p,
+    .pricing > p,
+    .legal > p {
+      text-align: center;
+      color: #CBD5E1;
+      margin: 0 0 30px;
       font-size: 18px;
     }
 
-    .btn {
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .agent-pill {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 28px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(226,232,240,0.1);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .agent-pill span {
+      color: #C9A85D;
+      font-size: 26px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .price-card {
+      padding: 28px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(226,232,240,0.11);
+    }
+
+    .price-card.popular {
+      border: 1px solid #C9A85D;
+      box-shadow: 0 0 0 1px rgba(201,168,93,0.18);
+    }
+
+    .badge {
       display: inline-block;
-      margin-top: 20px;
-      padding: 14px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(201,168,93,0.16);
+      color: #F8D982;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 12px;
     }
 
-    .primary {
-      background: #FACC15;
-      color: black;
+    .price {
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+      margin: 8px 0;
     }
 
-    .secondary {
-      border: 1px solid white;
-      color: white;
-      margin-left: 10px;
+    .price small {
+      color: #CBD5E1;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .price-card ul {
+      padding-left: 18px;
+      color: #CBD5E1;
+      line-height: 1.8;
+    }
+
+    .footer {
+      margin-top: 70px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(226,232,240,0.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: #94A3B8;
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .page { padding: 24px 18px 60px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { height: 360px; }
+      .trust-row,
+      .features,
+      .agent-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links,
+      .login {
+        display: none;
+      }
+      .hero h1 { font-size: 52px; }
     }
   </style>
 </head>
 
 <body>
+  <main class="page">
 
-  <h1>Your family.<br>Organized.<br>Always.<br>Automatically.</h1>
+    <nav class="navbar">
+      <div class="logo">Family<span>OS</span></div>
 
-  <p>
-    FamilyOS brings together planning, finances, health, education and daily life —
-    so you can focus on what truly matters: your family.
-  </p>
+      <div class="nav-links">
+        <a href="#product" data-i18n="nav_product">Product</a>
+        <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+        <a href="#security" data-i18n="nav_security">Security</a>
+        <a href="#about" data-i18n="nav_about">About</a>
+      </div>
 
-  <a href="#" class="btn primary">Start Free</a>
-  <a href="#" class="btn secondary">Watch Demo</a>
+      <div class="nav-actions">
+        <select class="language" id="languageSelect">
+          <option value="en">EN</option>
+          <option value="ro">RO</option>
+          <option value="it">IT</option>
+          <option value="fr">FR</option>
+          <option value="es">ES</option>
+          <option value="de">DE</option>
+        </select>
+        <a class="login" href="#" data-i18n="login">Log in</a>
+        <a class="start" href="#" data-i18n="start_free">Start Free</a>
+      </div>
+    </nav>
 
+    <section class="hero">
+      <div>
+        <h1>
+          <span data-i18n="hero_1">Your family.</span><br>
+          <span data-i18n="hero_2">Organized.</span><br>
+          <span data-i18n="hero_3">Always.</span><br>
+          <span class="gold" data-i18n="hero_4">Automatically.</span>
+        </h1>
+
+        <p data-i18n="hero_text">
+          FamilyOS brings together planning, finances, health, education and daily life —
+          so you can focus on what truly matters: your family.
+        </p>
+
+        <div class="buttons">
+          <button class="btn-primary" data-i18n="trial">Start Your Free Trial</button>
+          <button class="btn-secondary" data-i18n="demo">▶ Watch Demo</button>
+        </div>
+      </div>
+
+      <div class="hero-image"></div>
+    </section>
+
+    <section class="trust-row">
+      <div class="trust-card" data-i18n="trust_1">🔒 Secure & Private</div>
+      <div class="trust-card" data-i18n="trust_2">✨ AI-Powered</div>
+      <div class="trust-card" data-i18n="trust_3">🧩 All-in-One</div>
+      <div class="trust-card" data-i18n="trust_4">💚 Built for Families</div>
+    </section>
+
+    <section id="product">
+      <div class="section-title">
+        <h2 data-i18n="features_title">Everything your family needs</h2>
+        <p data-i18n="features_subtitle">Six powerful areas. One seamless experience.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <div class="icon">🗓️</div>
+          <h3 data-i18n="f1_title">Planner & Calendar</h3>
+          <p data-i18n="f1_text">Smart scheduling for school, work, appointments and family life.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">💳</div>
+          <h3 data-i18n="f2_title">Finances</h3>
+          <p data-i18n="f2_text">Track expenses, bills and subscriptions with AI budget insights.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">♡</div>
+          <h3 data-i18n="f3_title">Health</h3>
+          <p data-i18n="f3_text">Stay on top of appointments, medication reminders and wellness.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">🎓</div>
+          <h3 data-i18n="f4_title">Education</h3>
+          <p data-i18n="f4_text">Support learning, homework routines and school progress.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">✓</div>
+          <h3 data-i18n="f5_title">Tasks & Routines</h3>
+          <p data-i18n="f5_text">Build better family habits and keep everyone aligned.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">📁</div>
+          <h3 data-i18n="f6_title">Documents</h3>
+          <p data-i18n="f6_text">Store important family documents securely in one place.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="agents">
+      <h2 data-i18n="agents_title">AI agents that make life easier</h2>
+      <p data-i18n="agents_subtitle">Six specialized AI agents working 24/7 for your family.</p>
+
+      <div class="agent-grid">
+        <div class="agent-pill"><span>🗓️</span> <span data-i18n="agent1">Planner AI</span></div>
+        <div class="agent-pill"><span>💳</span> <span data-i18n="agent2">Budget AI</span></div>
+        <div class="agent-pill"><span>♡</span> <span data-i18n="agent3">Health AI</span></div>
+        <div class="agent-pill"><span>🎓</span> <span data-i18n="agent4">Education AI</span></div>
+        <div class="agent-pill"><span>✓</span> <span data-i18n="agent5">Routine AI</span></div>
+        <div class="agent-pill"><span>👥</span> <span data-i18n="agent6">Assistant AI</span></div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <h2 data-i18n="pricing_title">Simple pricing for every family</h2>
+      <p data-i18n="pricing_subtitle">Start monthly or save with annual plans.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>Starter</h3>
+          <div class="price">€9 <small>/ month</small></div>
+          <p>€79 / year</p>
+          <ul>
+            <li>Planner AI</li>
+            <li>Budget AI</li>
+            <li>Basic reminders</li>
+          </ul>
+        </div>
+
+        <div class="price-card popular">
+          <div class="badge">Most Popular</div>
+          <h3>Premium</h3>
+          <div class="price">€19 <small>/ month</small></div>
+          <p>€149 / year</p>
+          <ul>
+            <li>All 6 AI agents</li>
+            <li>Unlimited family members</li>
+            <li>Smart recommendations</li>
+          </ul>
+        </div>
+
+        <div class="price-card">
+          <h3>Family Pro</h3>
+          <div class="price">€39 <small>/ month</small></div>
+          <p>€349 / year</p>
+          <ul>
+            <li>Concierge AI</li>
+            <li>Advanced automations</li>
+            <li>Priority support</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal" id="security">
+      <h2 data-i18n="security_title">Built for trust</h2>
+      <p data-i18n="security_text">
+        FamilyOS is designed with privacy, security and family data protection in mind.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <div>© 2026 FamilyOS</div>
+      <div>Privacy Policy · Terms of Service · Security · GDPR</div>
+    </footer>
+
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        nav_product: "Product", nav_pricing: "Pricing", nav_security: "Security", nav_about: "About",
+        login: "Log in", start_free: "Start Free",
+        hero_1: "Your family.", hero_2: "Organized.", hero_3: "Always.", hero_4: "Automatically.",
+        hero_text: "FamilyOS brings together planning, finances, health, education and daily life — so you can focus on what truly matters: your family.",
+        trial: "Start Your Free Trial", demo: "▶ Watch Demo",
+        trust_1: "🔒 Secure & Private", trust_2: "✨ AI-Powered", trust_3: "🧩 All-in-One", trust_4: "💚 Built for Families",
+        features_title: "Everything your family needs", features_subtitle: "Six powerful areas. One seamless experience.",
+        f1_title: "Planner & Calendar", f1_text: "Smart scheduling for school, work, appointments and family life.",
+        f2_title: "Finances", f2_text: "Track expenses, bills and subscriptions with AI budget insights.",
+        f3_title: "Health", f3_text: "Stay on top of appointments, medication reminders and wellness.",
+        f4_title: "Education", f4_text: "Support learning, homework routines and school progress.",
+        f5_title: "Tasks & Routines", f5_text: "Build better family habits and keep everyone aligned.",
+        f6_title: "Documents", f6_text: "Store important family documents securely in one place.",
+        agents_title: "AI agents that make life easier", agents_subtitle: "Six specialized AI agents working 24/7 for your family.",
+        agent1: "Planner AI", agent2: "Budget AI", agent3: "Health AI", agent4: "Education AI", agent5: "Routine AI", agent6: "Assistant AI",
+        pricing_title: "Simple pricing for every family", pricing_subtitle: "Start monthly or save with annual plans.",
+        security_title: "Built for trust", security_text: "FamilyOS is designed with privacy, security and family data protection in mind."
+      },
+
+      ro: {
+        nav_product: "Produs", nav_pricing: "Prețuri", nav_security: "Securitate", nav_about: "Despre",
+        login: "Autentificare", start_free: "Începe gratuit",
+        hero_1: "Familia ta.", hero_2: "Organizată.", hero_3: "Mereu.", hero_4: "Automat.",
+        hero_text: "FamilyOS aduce împreună planificarea, finanțele, sănătatea, educația și viața de zi cu zi — ca tu să te poți concentra pe ce contează cu adevărat: familia ta.",
+        trial: "Începe perioada gratuită", demo: "▶ Vezi demo",
+        trust_1: "🔒 Sigur & Privat", trust_2: "✨ Powered by AI", trust_3: "🧩 Totul într-un loc", trust_4: "💚 Creat pentru familii",
+        features_title: "Tot ce are nevoie familia ta", features_subtitle: "Șase zone puternice. O experiență simplă.",
+        f1_title: "Planner & Calendar", f1_text: "Programări inteligente pentru școală, muncă, doctor și familie.",
+        f2_title: "Finanțe", f2_text: "Urmărește cheltuieli, facturi și abonamente cu insight-uri AI.",
+        f3_title: "Sănătate", f3_text: "Ține evidența programărilor, medicamentelor și stării de bine.",
+        f4_title: "Educație", f4_text: "Sprijină învățarea, temele și progresul școlar.",
+        f5_title: "Taskuri & Rutine", f5_text: "Construiește obiceiuri mai bune și ține familia aliniată.",
+        f6_title: "Documente", f6_text: "Păstrează documentele importante ale familiei într-un loc sigur.",
+        agents_title: "Agenți AI care fac viața mai ușoară", agents_subtitle: "Șase agenți AI specializați, disponibili 24/7 pentru familia ta.",
+        agent1: "Planner AI", agent2: "Budget AI", agent3: "Health AI", agent4: "Education AI", agent5: "Routine AI", agent6: "Assistant AI",
+        pricing_title: "Prețuri simple pentru fiecare familie", pricing_subtitle: "Alege lunar sau economisește cu planurile anuale.",
+        security_title: "Construit pentru încredere", security_text: "FamilyOS este gândit pentru confidențialitate, securitate și protecția datelor familiei."
+      },
+
+      it: {
+        nav_product: "Prodotto", nav_pricing: "Prezzi", nav_security: "Sicurezza", nav_about: "Info",
+        login: "Accedi", start_free: "Inizia gratis",
+        hero_1: "La tua famiglia.", hero_2: "Organizzata.", hero_3: "Sempre.", hero_4: "Automaticamente.",
+        hero_text: "FamilyOS riunisce pianificazione, finanze, salute, educazione e vita quotidiana — così puoi concentrarti su ciò che conta davvero: la tua famiglia.",
+        trial: "Inizia la prova gratuita", demo: "▶ Guarda demo",
+        trust_1: "🔒 Sicuro & Privato", trust_2: "✨ Con AI", trust_3: "🧩 Tutto in uno", trust_4: "💚 Creato per famiglie",
+        features_title: "Tutto ciò di cui la tua famiglia ha bisogno", features_subtitle: "Sei aree potenti. Un'esperienza fluida.",
+        f1_title: "Planner & Calendario", f1_text: "Pianificazione intelligente per scuola, lavoro, appuntamenti e famiglia.",
+        f2_title: "Finanze", f2_text: "Monitora spese, bollette e abbonamenti con insight AI.",
+        f3_title: "Salute", f3_text: "Gestisci appuntamenti, promemoria medicinali e benessere.",
+        f4_title: "Educazione", f4_text: "Supporta apprendimento, compiti e progresso scolastico.",
+        f5_title: "Attività & Routine", f5_text: "Crea abitudini migliori e mantieni tutti allineati.",
+        f6_title: "Documenti", f6_text: "Conserva i documenti importanti della famiglia in modo sicuro.",
+        agents_title: "Agenti AI che semplificano la vita", agents_subtitle: "Sei agenti AI specializzati attivi 24/7 per la tua famiglia.",
+        agent1: "Planner AI", agent2: "Budget AI", agent3: "Health AI", agent4: "Education AI", agent5: "Routine AI", agent6: "Assistant AI",
+        pricing_title: "Prezzi semplici per ogni famiglia", pricing_subtitle: "Scegli mensile o risparmia con i piani annuali.",
+        security_title: "Costruito per la fiducia", security_text: "FamilyOS è progettato pensando a privacy, sicurezza e protezione dei dati familiari."
+      },
+
+      fr: {
+        nav_product: "Produit", nav_pricing: "Tarifs", nav_security: "Sécurité", nav_about: "À propos",
+        login: "Connexion", start_free: "Commencer",
+        hero_1: "Votre famille.", hero_2: "Organisée.", hero_3: "Toujours.", hero_4: "Automatiquement.",
+        hero_text: "FamilyOS réunit planning, finances, santé, éducation et vie quotidienne — pour vous concentrer sur l’essentiel : votre famille.",
+        trial: "Essai gratuit", demo: "▶ Voir la démo",
+        trust_1: "🔒 Sécurisé & Privé", trust_2: "✨ Propulsé par l’IA", trust_3: "🧩 Tout-en-un", trust_4: "💚 Conçu pour les familles",
+        features_title: "Tout ce dont votre famille a besoin", features_subtitle: "Six domaines puissants. Une expérience fluide.",
+        f1_title: "Planning & Calendrier", f1_text: "Organisation intelligente pour école, travail, rendez-vous et vie familiale.",
+        f2_title: "Finances", f2_text: "Suivez dépenses, factures et abonnements avec des insights IA.",
+        f3_title: "Santé", f3_text: "Gardez le contrôle des rendez-vous, médicaments et bien-être.",
+        f4_title: "Éducation", f4_text: "Soutenez l’apprentissage, les devoirs et le progrès scolaire.",
+        f5_title: "Tâches & Routines", f5_text: "Construisez de meilleures habitudes familiales.",
+        f6_title: "Documents", f6_text: "Stockez les documents importants de la famille en sécurité.",
+        agents_title: "Des agents IA qui simplifient la vie", agents_subtitle: "Six agents IA spécialisés disponibles 24/7.",
+        pricing_title: "Des tarifs simples pour chaque famille", pricing_subtitle: "Mensuel ou annuel.",
+        security_title: "Conçu pour la confiance", security_text: "FamilyOS est conçu pour la confidentialité, la sécurité et la protection des données familiales."
+      },
+
+      es: {
+        nav_product: "Producto", nav_pricing: "Precios", nav_security: "Seguridad", nav_about: "Acerca de",
+        login: "Entrar", start_free: "Empezar gratis",
+        hero_1: "Tu familia.", hero_2: "Organizada.", hero_3: "Siempre.", hero_4: "Automáticamente.",
+        hero_text: "FamilyOS reúne planificación, finanzas, salud, educación y vida diaria — para que te enfoques en lo que importa: tu familia.",
+        trial: "Iniciar prueba gratis", demo: "▶ Ver demo",
+        trust_1: "🔒 Seguro & Privado", trust_2: "✨ Con IA", trust_3: "🧩 Todo en uno", trust_4: "💚 Hecho para familias",
+        features_title: "Todo lo que tu familia necesita", features_subtitle: "Seis áreas potentes. Una experiencia simple.",
+        pricing_title: "Precios simples para cada familia", pricing_subtitle: "Mensual o anual.",
+        security_title: "Diseñado para la confianza", security_text: "FamilyOS está diseñado para privacidad, seguridad y protección de datos familiares."
+      },
+
+      de: {
+        nav_product: "Produkt", nav_pricing: "Preise", nav_security: "Sicherheit", nav_about: "Über uns",
+        login: "Einloggen", start_free: "Kostenlos starten",
+        hero_1: "Deine Familie.", hero_2: "Organisiert.", hero_3: "Immer.", hero_4: "Automatisch.",
+        hero_text: "FamilyOS vereint Planung, Finanzen, Gesundheit, Bildung und Alltag — damit du dich auf deine Familie konzentrieren kannst.",
+        trial: "Kostenlose Testphase", demo: "▶ Demo ansehen",
+        trust_1: "🔒 Sicher & Privat", trust_2: "✨ KI-gestützt", trust_3: "🧩 Alles in einem", trust_4: "💚 Für Familien gebaut",
+        features_title: "Alles, was deine Familie braucht", features_subtitle: "Sechs starke Bereiche. Eine nahtlose Erfahrung.",
+        pricing_title: "Einfache Preise für jede Familie", pricing_subtitle: "Monatlich oder jährlich.",
+        security_title: "Gebaut für Vertrauen", security_text: "FamilyOS wurde für Datenschutz, Sicherheit und Familiendaten entwickelt."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const safeLang = translations[lang] ? lang : "en";
+      document.documentElement.lang = safeLang;
+      document.getElementById("languageSelect").value = safeLang;
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        const value = translations[safeLang][key] || translations.en[key];
+        if (value) el.textContent = value;
+      });
+
+      localStorage.setItem("familyos_lang", safeLang);
+    }
+
+    const savedLang = localStorage.getItem("familyos_lang");
+    const browserLang = (navigator.language || navigator.userLanguage || "en").slice(0, 2).toLowerCase();
+    const initialLang = savedLang || browserLang;
+
+    applyLanguage(initialLang);
+
+    document.getElementById("languageSelect").addEventListener("change", (e) => {
+      applyLanguage(e.target.value);
+    });
+  </script>
 </body>
 </html>
