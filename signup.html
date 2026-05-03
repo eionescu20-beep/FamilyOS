@@ -90,18 +90,19 @@
   }
 
   async function loginWithGoogle() {
-    const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: "https://family-os-eosin-psi.vercel.app"
-      }
-    });
+  alert("CLICK"); // test
 
-    if (error) {
-      alert(error.message);
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "https://family-os-eosin-psi.vercel.app"
     }
+  });
+
+  if (error) {
+    alert(error.message);
   }
-</script>
+}</script>
 
 </body>
 </html>
