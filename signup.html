@@ -1,108 +1,111 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <title>Signup</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <meta charset="UTF-8" />
+  <title>FamilyOS - Sign Up</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body {
-      background: #0b1b2b;
+      margin: 0;
+      min-height: 100vh;
+      background: #07111f;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
     }
 
     .card {
-      background: #1e3a5f;
-      padding: 30px;
-      border-radius: 12px;
-      width: 300px;
+      background: #102033;
+      padding: 32px;
+      border-radius: 18px;
+      width: 360px;
       text-align: center;
+      color: white;
     }
 
     input {
       width: 100%;
-      padding: 10px;
+      box-sizing: border-box;
+      padding: 14px;
       margin: 10px 0;
-      border-radius: 6px;
+      border-radius: 10px;
       border: none;
+      font-size: 16px;
     }
 
     .btn {
       width: 100%;
-      padding: 10px;
+      padding: 14px;
       margin-top: 10px;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
     }
 
     .primary {
-      background: gold;
+      background: #ffd400;
+      color: #111;
     }
 
     .google {
       background: white;
+      color: #111;
     }
   </style>
 </head>
 
 <body>
+  <div class="card">
+    <h1>Începe Gratuit</h1>
+    <p>Creează contul tău</p>
 
-<div class="card">
-  <h2>Începe Gratuit</h2>
-  <p>Creează contul tău</p>
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+    <button class="btn primary" onclick="signup()">Creează cont</button>
 
-  <button class="btn primary" onclick="signup()">Creează cont</button>
+    <button class="btn google" onclick="loginWithGoogle()">
+      Continuă cu Google
+    </button>
+  </div>
 
-  <button class="btn google" onclick="alert('BUTON MERGE')">
-  Continuă cu Google
-</button>
-</div>
-
-<script>
-  const supabaseClient = supabase.createClient(
-    "mcqjnykrupqplsrzjuvm,
-    "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://mcqjnykrupqplsrzjuvm.supabase.co",
+      "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
     );
 
-  async function signup() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    window.signup = async function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password
-    });
+      const { error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+      });
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Cont creat! Verifică email.");
-    }
-  }
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Cont creat! Verifică email.");
+      }
+    };
 
-  async function loginWithGoogle() {
-  alert("CLICK"); // test
+    window.loginWithGoogle = async function () {
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://family-os-eosin-psi.vercel.app"
+        }
+      });
 
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: "https://family-os-eosin-psi.vercel.app"
-    }
-  });
-
-  if (error) {
-    alert(error.message);
-  }
-}</script>
-
+      if (error) {
+        alert(error.message);
+      }
+    };
+  </script>
 </body>
 </html>
