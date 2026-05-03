@@ -97,9 +97,6 @@
     window.loginWithGoogle = async function () {
       const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: "https://family-os-eosin-psi.vercel.app"
-        }
       });
 
       if (error) {
