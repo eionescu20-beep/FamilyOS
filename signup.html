@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sign Up</title>
+  <meta charset="UTF-8">
+  <title>Signup</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
   <style>
     body {
-      background: #0f172a;
+      background: #0b1b2b;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      font-family: sans-serif;
+      font-family: Arial;
     }
 
     .card {
-      background: #1e293b;
+      background: #1e3a5f;
       padding: 30px;
-      border-radius: 16px;
+      border-radius: 12px;
       width: 300px;
       text-align: center;
-      color: white;
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
-      border-radius: 8px;
+      margin: 10px 0;
+      border-radius: 6px;
       border: none;
     }
 
@@ -37,77 +36,72 @@
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 8px;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
     }
 
     .primary {
-      background: #facc15;
-      color: black;
+      background: gold;
     }
 
     .google {
       background: white;
-      color: black;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h2>Începe Gratuit</h2>
-    <p>Creează contul tău</p>
+<div class="card">
+  <h2>Începe Gratuit</h2>
+  <p>Creează contul tău</p>
 
-    <input id="email" type="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Password" />
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
-    <button class="btn primary" onclick="signup()">Creează cont</button>
+  <button class="btn primary" onclick="signup()">Creează cont</button>
 
-  
-<button class="btn google" onclick="loginWithGoogle()">
-  Continuă cu Google
-</button>
-  </div>
+  <button class="btn google" onclick="loginWithGoogle()">
+    Continuă cu Google
+  </button>
+</div>
 
-  <script>
-    const supabaseClient = supabase.createClient(
-      "https://mcqjnykrupqplsrzjuvm.supabase.co",
-      "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
+<script>
+  const supabaseClient = supabase.createClient(
+    "mcqjnykrupqplsrzjuvm,
+    "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
     );
 
-    async function signup() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  async function signup() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-      const { error } = await supabaseClient.auth.signUp({
-        email,
-        password
-      });
+    const { error } = await supabaseClient.auth.signUp({
+      email,
+      password
+    });
 
-      if (error) {
-        alert(error.message);
-      } else {
-        alert("Cont creat! Verifică email.");
-      }
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Cont creat! Verifică email.");
     }
-
-    async function loginWithGoogle() {
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: "http://localhost:5173"
-    }
-  });
-
-  if (error) {
-    alert(error.message);
   }
-}
-    
-  </script>
+
+  async function loginWithGoogle() {
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "http://localhost:5173"
+      }
+    });
+
+    if (error) {
+      alert(error.message);
+    }
+  }
+</script>
 
 </body>
 </html>
