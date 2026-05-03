@@ -66,10 +66,7 @@
     <input id="password" type="password" placeholder="Password" />
 
     <button class="btn primary" onclick="signup()">Creează cont</button>
-
-    <button class="btn google" onclick="loginWithGoogle()">
-      Continuă cu Google
-    </button>
+    
   </div>
 
   <script>
@@ -94,7 +91,6 @@
       }
     };
 
-    window.loginWithGoogle = async function () {
       const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: "google",
       });
