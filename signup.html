@@ -2,7 +2,8 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <title>FamilyOS - Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FamilyOS - Login</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -14,15 +15,15 @@
       justify-content: center;
       align-items: center;
       font-family: Arial, sans-serif;
+      color: white;
     }
 
     .card {
+      width: 360px;
       background: #102033;
       padding: 32px;
       border-radius: 18px;
-      width: 360px;
       text-align: center;
-      color: white;
     }
 
     input {
@@ -35,7 +36,7 @@
       font-size: 16px;
     }
 
-    .btn {
+    button {
       width: 100%;
       padding: 14px;
       margin-top: 10px;
@@ -43,6 +44,7 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     .primary {
@@ -50,23 +52,31 @@
       color: #111;
     }
 
-    .google {
+    .secondary {
       background: white;
       color: #111;
+    }
+
+    .message {
+      margin-top: 15px;
+      color: #ffd400;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
   <div class="card">
-    <h1>Începe Gratuit</h1>
-    <p>Creează contul tău</p>
+    <h1>FamilyOS</h1>
+    <p>Login sau creează cont</p>
 
     <input id="email" type="email" placeholder="Email" />
     <input id="password" type="password" placeholder="Password" />
 
-    <button class="btn primary" onclick="signup()">Creează cont</button>
-    
+    <button class="primary" onclick="signup()">Creează cont</button>
+    <button class="secondary" onclick="login()">Login</button>
+
+    <div id="message" class="message"></div>
   </div>
 
   <script>
@@ -75,29 +85,49 @@
       "sb_publishable_9XFTG46eg3zJuE-aoKMxFw_c4N1HOzM"
     );
 
+    function showMessage(text) {
+      document.getElementById("message").innerText = text;
+    }
+
     window.signup = async function () {
-      alert("SIGNUP CLICK");
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
+      if (!email || !password) {
+        showMessage("Completează email și parolă.");
+        return;
+      }
+
       const { error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
+        email,
+        password
       });
 
       if (error) {
-        alert(error.message);
+        showMessage(error.message);
       } else {
-        alert("Cont creat! Verifică email.");
+        showMessage("Cont creat. Verifică emailul pentru confirmare.");
       }
     };
 
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: "google",
+    window.login = async function () {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showMessage("Completează email și parolă.");
+        return;
+      }
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
       });
 
       if (error) {
-        alert(error.message);
+        showMessage(error.message);
+      } else {
+        showMessage("Login reușit. Bine ai venit în FamilyOS.");
       }
     };
   </script>
