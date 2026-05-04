@@ -105,7 +105,7 @@ async function addMember() {
     return;
   }
 
-  const { data, error } = await supabaseClient
+  const { error } = await supabaseClient
     .from("family")
     .insert([{ name: name }]);
 
@@ -118,25 +118,54 @@ async function addMember() {
   }
 }
 
+async function deleteMember(id) {
+  const { error } = await supabaseClient
+    .from("family")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("Eroare la ștergere: " + error.message);
+  } else {
+    loadMembers();
+  }
+}
+
 async function loadMembers() {
   const { data, error } = await supabaseClient
     .from("family")
-    .select("*");
+    .select("*")
+    .order("id", { ascending: true });
 
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  if (data) {
-    data.forEach(item => {
-      const div = document.createElement("div");
-      div.innerText = item.name;
-      list.appendChild(div);
-    });
+  if (error) {
+    alert("Eroare listă: " + error.message);
+    return;
   }
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.justifyContent = "space-between";
+    div.style.alignItems = "center";
+
+    const span = document.createElement("span");
+    span.innerText = item.name;
+
+    const btn = document.createElement("button");
+    btn.innerText = "Șterge";
+    btn.onclick = () => deleteMember(item.id);
+
+    div.appendChild(span);
+    div.appendChild(btn);
+    list.appendChild(div);
+  });
 }
 
 loadMembers();
 </script>
-
+  
 </body>
 </html>
