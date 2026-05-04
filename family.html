@@ -76,39 +76,51 @@ button {
 </div>
 
 <script>
+<script>
 const supabaseClient = supabase.createClient(
-  "https://mcqjnykrupqaplsrzjvm.supabase.co",
-  "sb_publishable_9XFTG46eg3zJuE-aOKMXFw_C4NiHOzM"
+  "https://mcqjnykrupqplsrzjuvm.supabase.co",
+  "https://mcqjnykrupqplsrzjuvm.supabase.co"
 );
 
+async function addMember() {
+  const name = document.getElementById("name").value;
+
+  if (!name) {
+    alert("Scrie un nume");
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("family")
+    .insert([
+      { name: name }
+    ]);
+
+  if (error) {
+    alert("Eroare: " + error.message);
+  } else {
+    alert("Adăugat!");
+    document.getElementById("name").value = "";
+    loadMembers();
+  }
+}
+
 async function loadMembers() {
-  const { data } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("family")
     .select("*");
 
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  data.forEach(m => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerText = m.name;
-    list.appendChild(div);
-  });
-}
-
-async function addMember() {
-  const name = document.getElementById("name").value;
-
-  await supabaseClient
-    .from("family")
-    .insert([{ name }]);
-
-  loadMembers();
+  if (data) {
+    data.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item.name;
+      list.appendChild(li);
+    });
+  }
 }
 
 loadMembers();
 </script>
-
-</body>
-</html>
