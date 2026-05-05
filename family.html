@@ -165,8 +165,10 @@ async function loadMembers() {
     div.style.alignItems = "center";
 
     const span = document.createElement("span");
-    span.innerText = item.name;
-
+   span.innerText = item.birthdate
+  ? item.name + " — " + item.birthdate
+  : item.name;
+    
     const btn = document.createElement("button");
     btn.innerText = "Șterge";
     btn.onclick = () => deleteMember(item.id);
