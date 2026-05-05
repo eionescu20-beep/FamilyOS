@@ -143,9 +143,17 @@ async function deleteMember(id) {
 }
 
 async function loadMembers() {
+  const { data: userData } = await supabaseClient.auth.getUser();
+
+  if (!userData.user) {
+    window.location.href = "signup.html";
+    return;
+  }
+
   const { data, error } = await supabaseClient
     .from("family")
     .select("*")
+    .eq("user_id", userData.user.id)
     .order("id", { ascending: true });
 
   const list = document.getElementById("list");
@@ -174,7 +182,6 @@ async function loadMembers() {
     list.appendChild(div);
   });
 }
-
 loadMembers();
 </script>
   
