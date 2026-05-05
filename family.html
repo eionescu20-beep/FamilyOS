@@ -83,6 +83,7 @@ button {
 
     <div class="card">
       <input id="name" placeholder="Nume membru">
+      <input id="birthdate" type="date">
       <button onclick="addMember()">Adaugă</button>
     </div>
 
@@ -99,32 +100,25 @@ const supabaseClient = supabase.createClient(
 
 async function addMember() {
   const name = document.getElementById("name").value;
+  const birthdate = document.getElementById("birthdate").value;
 
-  if (!name) {
-    alert("Scrie un nume");
-    return;
-  }
-
-  const { data: userData } = await supabaseClient.auth.getUser();
-
-  if (!userData.user) {
-    alert("Trebuie să fii logat.");
-    window.location.href = "signup.html";
-    return;
-  }
+  const { data: { user } } = await supabaseClient.auth.getUser();
 
   const { error } = await supabaseClient
     .from("family")
-    .insert([{ 
-      name: name,
-      user_id: userData.user.id
-    }]);
+    .insert([
+      {
+        name: name,
+        birthdate: birthdate,
+        user_id: user.id
+      }
+    ]);
 
   if (error) {
-    alert("Eroare: " + error.message);
+    alert("Eroare la adăugare: " + error.message);
   } else {
-    alert("Adăugat!");
     document.getElementById("name").value = "";
+    document.getElementById("birthdate").value = "";
     loadMembers();
   }
 }
