@@ -105,9 +105,20 @@ async function addMember() {
     return;
   }
 
+  const { data: userData } = await supabaseClient.auth.getUser();
+
+  if (!userData.user) {
+    alert("Trebuie să fii logat.");
+    window.location.href = "signup.html";
+    return;
+  }
+
   const { error } = await supabaseClient
     .from("family")
-    .insert([{ name: name }]);
+    .insert([{ 
+      name: name,
+      user_id: userData.user.id
+    }]);
 
   if (error) {
     alert("Eroare: " + error.message);
@@ -117,7 +128,7 @@ async function addMember() {
     loadMembers();
   }
 }
-
+  
 async function deleteMember(id) {
   const { error } = await supabaseClient
     .from("family")
